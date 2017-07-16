@@ -30,19 +30,15 @@ import java.util.Set;
 public class MainActivity extends AppCompatActivity
 {
 
-
     BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-
 
     RecyclerView recyclerViewPaired;
     ArrayList<BluetoothDevice> pairedList = new ArrayList<BluetoothDevice>();
     DeviceAdapter deviveAdapter = new DeviceAdapter(pairedList);
 
-
     RecyclerView recyclerViewAvailable;
     ArrayList<BluetoothDevice> availableList = new ArrayList<BluetoothDevice>();
     DeviceAdapter deviceAdapterAvailable = new DeviceAdapter(availableList);
-
 
     in.gvc.bluetooth.BroadcastReceiver broadcastReceiver = new BroadcastReceiver();
 
@@ -55,12 +51,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        /*try {
-            init();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
 
         recyclerViewPaired = findViewById(R.id.paired_list);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -96,7 +86,6 @@ public class MainActivity extends AppCompatActivity
         });
 
 
-
         scan_button = findViewById(R.id.scan_button);
         scan_button.setOnClickListener(new View.OnClickListener()
         {
@@ -104,7 +93,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 checkBluetoothPermissions();
-                if(scan_button.getText().equals("Start Scan"))
+                if (scan_button.getText().equals("Start Scan"))
                     mBluetoothAdapter.startDiscovery();
                 else
                     mBluetoothAdapter.cancelDiscovery();
@@ -117,17 +106,9 @@ public class MainActivity extends AppCompatActivity
             onActivityResult(1000, 0, null);
         } else
         {
-            /*RelativeLayout frameLayout = findViewById(R.id.content_main);
-            frameLayout.removeAllViews();
-
-            LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-            View v = inflater.inflate(R.layout.off_bluetooth, null);
-
-            */
             findViewById(R.id.off_bluetooth).setVisibility(View.VISIBLE);
             findViewById(R.id.on_bluetooth).setVisibility(View.INVISIBLE);
         }
-
 
         IntentFilter filter = new IntentFilter();
 
@@ -141,34 +122,9 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void send_on(View view)
-    {
-        String str = "on";
-        try
-        {
-            write(str);
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
-    public void send_off(View view)
-    {
-        String str = "off";
-        try
-        {
-            write(str);
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
@@ -176,12 +132,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings)
         {
             return true;
@@ -252,12 +204,10 @@ public class MainActivity extends AppCompatActivity
             mBluetoothAdapter.disable();
 
             switch1.setText("Bluetooth is OFF");
-            //findViewById(R.id.device_name).setVisibility(View.INVISIBLE);
 
             while (pairedList.size() > 0)
                 pairedList.remove(0);
             deviveAdapter.notifyDataSetChanged();
-
 
             findViewById(R.id.off_bluetooth).setVisibility(View.VISIBLE);
             findViewById(R.id.on_bluetooth).setVisibility(View.INVISIBLE);
@@ -265,10 +215,7 @@ public class MainActivity extends AppCompatActivity
         } else
         {
             Intent intent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-
             startActivityForResult(intent, 1000);
-
-            //findViewById(R.id.device_name).setVisibility(View.VISIBLE);
 
             makeDiscoverable();
 
@@ -277,51 +224,47 @@ public class MainActivity extends AppCompatActivity
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if (requestCode == 1000)
+        if (requestCode == 1000 && mBluetoothAdapter.isEnabled() == true)
         {
-            /*RelativeLayout frameLayout = findViewById(R.id.content_main);
-            frameLayout.removeAllViews();
-
-            LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
-            View v = inflater.inflate(R.layout.content_main, null);
-
-            frameLayout.addView(v);*/
-
             findViewById(R.id.off_bluetooth).setVisibility(View.INVISIBLE);
             findViewById(R.id.on_bluetooth).setVisibility(View.VISIBLE);
 
-            //recyclerViewPaired.setVisibility(View.VISIBLE);
             ((Switch) findViewById(R.id.switch1)).setChecked(true);
             ((Switch) findViewById(R.id.switch1)).setText("Bluetooth is ON");
             ((TextView) findViewById(R.id.device_name)).setText("Your Device (" + mBluetoothAdapter.getName()
                     + ") is currently visible to nearby devices.");
 
             updatePairedList();
-
+            scan_button.performClick();
 
         }
+        else
+        {
+            ((Switch) findViewById(R.id.switch1)).setText("Bluetooth is OFF");
+            ((Switch) findViewById(R.id.switch1)).setChecked(false);
+        }
     }
+
     void updatePairedList()
     {
         List<BluetoothDevice> pairedDevices = new ArrayList<>(mBluetoothAdapter.getBondedDevices());
 
+        while (pairedList.size() > 0)
+            pairedList.remove(0);
 
+        pairedList.addAll(pairedDevices);
 
-            while (pairedList.size() > 0)
-                pairedList.remove(0);
-
-            pairedList.addAll(pairedDevices);
-
-            Log.i("ARPIT", "paired devices size : " + pairedList.size());
-            deviveAdapter.notifyDataSetChanged();
+        Log.i("ARPIT", "paired devices size : " + pairedList.size());
+        deviveAdapter.notifyDataSetChanged();
 
     }
+
     void updateAvailableList()
     {
-        for(int i=0;i<availableList.size();i++)
+        for (int i = 0; i < availableList.size(); i++)
         {
             BluetoothDevice device = availableList.get(i);
-            if(device.getBondState() == BluetoothDevice.BOND_BONDED)
+            if (device.getBondState() == BluetoothDevice.BOND_BONDED)
                 availableList.remove(i--);
         }
         deviceAdapterAvailable.notifyDataSetChanged();
@@ -364,7 +307,7 @@ public class MainActivity extends AppCompatActivity
             }
         } else
         {
-            Log.d("ARPIT", "checkBTPermissions: No need to check permissions. SDK version < LOLLIPOP.");
+            //Log.d("ARPIT", "checkBTPermissions: No need to check permissions. SDK version < LOLLIPOP.");
         }
     }
 
@@ -375,13 +318,4 @@ public class MainActivity extends AppCompatActivity
         startActivity(discoverableIntent);
     }
 
-    public void toggleScan(View view)
-    {
-        scan_button = findViewById(R.id.scan_button);
-        checkBluetoothPermissions();
-        if(scan_button.getText().equals("Start Scan"))
-            mBluetoothAdapter.startDiscovery();
-        else
-            mBluetoothAdapter.cancelDiscovery();
-    }
 }

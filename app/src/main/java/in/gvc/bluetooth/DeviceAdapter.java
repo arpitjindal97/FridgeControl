@@ -8,10 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -24,7 +21,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
         public TextView name, mac;
-        public Button pairButton;
+        public ImageButton pairButton;
         public ImageView imageView;
 
         public MyViewHolder(View view)
@@ -32,7 +29,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.MyViewHold
             super(view);
             name = (TextView) view.findViewById(R.id.device_name);
             mac = (TextView) view.findViewById(R.id.device_address);
-            pairButton = (Button) view.findViewById(R.id.btn_pair);
+            pairButton = view.findViewById(R.id.btn_pair);
             imageView = (ImageView)view.findViewById(R.id.imageView);
         }
     }
@@ -59,7 +56,9 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.MyViewHold
         holder.name.setText(movie.getName());
         holder.mac.setText(movie.getAddress());
         if (movie.getBondState() == BluetoothDevice.BOND_BONDED)
-            holder.pairButton.setText("Unpair");
+            holder.pairButton.setImageResource(
+                    context.getResources().getIdentifier("in.gvc.bluetooth:mipmap/" + "unpair_icon",
+                            null, null));
         holder.pairButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -75,7 +74,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.MyViewHold
                     {e.printStackTrace();
                     }
 
-                    holder.pairButton.setText("Pair");
+                    //holder.pairButton.setText("Pair");
                 }
                 else
                 {
@@ -127,6 +126,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.MyViewHold
         else if(something == (BluetoothClass.Device.WEARABLE_WRIST_WATCH))
         {
             return context.getResources().getIdentifier("in.gvc.bluetooth:mipmap/" + "wrist_watch_icon", null, null);
+        }
+        else if(something == 7936)
+        {
+            return context.getResources().getIdentifier("in.gvc.bluetooth:mipmap/" + "developer_board_icon", null, null);
         }
         else
         {
