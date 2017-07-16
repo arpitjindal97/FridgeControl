@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewPaired.getContext(),
                 new LinearLayoutManager(this).getOrientation());
         recyclerViewPaired.addItemDecoration(dividerItemDecoration);
+        deviveAdapter.context = this;
 
 
         recyclerViewAvailable = findViewById(R.id.available_list);
@@ -79,6 +80,7 @@ public class MainActivity extends AppCompatActivity
         dividerItemDecoration = new DividerItemDecoration(recyclerViewAvailable.getContext(),
                 new LinearLayoutManager(this).getOrientation());
         recyclerViewAvailable.addItemDecoration(dividerItemDecoration);
+        deviceAdapterAvailable.context = this;
 
 
         broadcastReceiver.main_context = this;
@@ -358,7 +360,6 @@ public class MainActivity extends AppCompatActivity
             permissionCheck += this.checkSelfPermission("Manifest.permission.ACCESS_COARSE_LOCATION");
             if (permissionCheck != 0)
             {
-
                 this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001); //Any number
             }
         } else

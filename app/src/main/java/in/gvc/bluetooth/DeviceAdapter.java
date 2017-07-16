@@ -1,11 +1,15 @@
 package in.gvc.bluetooth;
 
+import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,13 +18,14 @@ import java.util.List;
 
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.MyViewHolder>
 {
-
+    public Context context;
     private List<BluetoothDevice> moviesList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
         public TextView name, mac;
         public Button pairButton;
+        public ImageView imageView;
 
         public MyViewHolder(View view)
         {
@@ -28,6 +33,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.MyViewHold
             name = (TextView) view.findViewById(R.id.device_name);
             mac = (TextView) view.findViewById(R.id.device_address);
             pairButton = (Button) view.findViewById(R.id.btn_pair);
+            imageView = (ImageView)view.findViewById(R.id.imageView);
         }
     }
 
@@ -78,11 +84,53 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.MyViewHold
                 //Toast.makeText(holder.pairButton.getContext(), movie.getName() + " clicked", Toast.LENGTH_SHORT).show();
             }
         });
-    }
+        int id=0;
 
+        id = getBluetoothID(movie.getBluetoothClass().getDeviceClass());
+
+        Log.i("ARPIT",movie.getBluetoothClass().getDeviceClass() +"");
+        holder.imageView.setImageResource(id);
+    }
     @Override
     public int getItemCount()
     {
         return moviesList.size();
+    }
+
+
+    public int getBluetoothID(int something)
+    {
+        if(something == (BluetoothClass.Device.PHONE_SMART))
+        {
+            return context.getResources().getIdentifier("in.gvc.bluetooth:mipmap/" + "phone_smart_icon", null, null);
+        }
+        else if(something == (BluetoothClass.Device.AUDIO_VIDEO_WEARABLE_HEADSET))
+        {
+            return context.getResources().getIdentifier("in.gvc.bluetooth:mipmap/" + "headset_mic_icon", null, null);
+        }
+        else if(something == (BluetoothClass.Device.COMPUTER_LAPTOP))
+        {
+            return context.getResources().getIdentifier("in.gvc.bluetooth:mipmap/" + "laptop_icon", null, null);
+        }
+        else if(something == (BluetoothClass.Device.AUDIO_VIDEO_VIDEO_DISPLAY_AND_LOUDSPEAKER))
+        {
+            return context.getResources().getIdentifier("in.gvc.bluetooth:mipmap/" + "smart_tv", null, null);
+        }
+        else if(something == (BluetoothClass.Device.PHONE_CELLULAR))
+        {
+            return context.getResources().getIdentifier("in.gvc.bluetooth:mipmap/" + "phone_smart_icon", null, null);
+        }
+        else if(something == (BluetoothClass.Device.AUDIO_VIDEO_HANDSFREE))
+        {
+            return context.getResources().getIdentifier("in.gvc.bluetooth:mipmap/" + "speaker_icon", null, null);
+        }
+        else if(something == (BluetoothClass.Device.WEARABLE_WRIST_WATCH))
+        {
+            return context.getResources().getIdentifier("in.gvc.bluetooth:mipmap/" + "wrist_watch_icon", null, null);
+        }
+        else
+        {
+            return context.getResources().getIdentifier("in.gvc.bluetooth:mipmap/" + "other_device_icon", null, null);
+        }
     }
 }
