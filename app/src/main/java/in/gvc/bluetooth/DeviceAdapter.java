@@ -53,7 +53,13 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, int position)
     {
         final BluetoothDevice movie = moviesList.get(position);
-        holder.name.setText(movie.getName());
+        
+        String str="";
+        for(char ch : movie.getName().toCharArray())
+            if(ch != '\n')
+                str+=ch;
+
+        holder.name.setText(str);
         holder.mac.setText(movie.getAddress());
         if (movie.getBondState() == BluetoothDevice.BOND_BONDED)
             holder.pairButton.setImageResource(
