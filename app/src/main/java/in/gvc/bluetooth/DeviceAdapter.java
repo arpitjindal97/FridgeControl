@@ -127,7 +127,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.MyViewHold
         {
             return context.getResources().getIdentifier("in.gvc.bluetooth:mipmap/" + "wrist_watch_icon", null, null);
         }
-        else if(something == 7936)
+        else if(something == BluetoothClass.Device.Major.UNCATEGORIZED)
         {
             return context.getResources().getIdentifier("in.gvc.bluetooth:mipmap/" + "developer_board_icon", null, null);
         }
