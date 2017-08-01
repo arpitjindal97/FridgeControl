@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerViewPaired.getContext(),
                 new LinearLayoutManager(this).getOrientation());
         recyclerViewPaired.addItemDecoration(dividerItemDecoration);
+        //recyclerViewPaired.addOnItemTouchListener(getRecyclerViewClickListener(recyclerViewPaired));
         deviveAdapter.context = this;
 
 
@@ -70,6 +71,8 @@ public class MainActivity extends AppCompatActivity
         dividerItemDecoration = new DividerItemDecoration(recyclerViewAvailable.getContext(),
                 new LinearLayoutManager(this).getOrientation());
         recyclerViewAvailable.addItemDecoration(dividerItemDecoration);
+
+        //recyclerViewAvailable.addOnItemTouchListener(getRecyclerViewClickListener(recyclerViewAvailable));
         deviceAdapterAvailable.context = this;
 
 
@@ -104,6 +107,7 @@ public class MainActivity extends AppCompatActivity
         {
             makeDiscoverable();
             onActivityResult(1000, 0, null);
+            scan_button.performClick();
         } else
         {
             findViewById(R.id.off_bluetooth).setVisibility(View.VISIBLE);
@@ -235,13 +239,20 @@ public class MainActivity extends AppCompatActivity
                     + ") is currently visible to nearby devices.");
 
             updatePairedList();
-            scan_button.performClick();
+            //scan_button.performClick();
 
+        }
+        else if(requestCode == 1)
+        {
+            onActivityResult(1000, 0, null);
         }
         else
         {
             ((Switch) findViewById(R.id.switch1)).setText("Bluetooth is OFF");
             ((Switch) findViewById(R.id.switch1)).setChecked(false);
+
+            findViewById(R.id.off_bluetooth).setVisibility(View.VISIBLE);
+            findViewById(R.id.on_bluetooth).setVisibility(View.INVISIBLE);
         }
     }
 
@@ -288,7 +299,13 @@ public class MainActivity extends AppCompatActivity
     public void onDestroy()
     {
         unregisterReceiver(broadcastReceiver);
-
+        if (mBluetoothAdapter != null)
+        {
+            if (mBluetoothAdapter.isDiscovering())
+            {
+                mBluetoothAdapter.cancelDiscovery();
+            }
+        }
         super.onDestroy();
     }
 
@@ -317,5 +334,7 @@ public class MainActivity extends AppCompatActivity
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 180);
         startActivity(discoverableIntent);
     }
+
+
 
 }

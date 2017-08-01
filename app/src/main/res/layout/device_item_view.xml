@@ -23,13 +23,14 @@
 	<TextView
 			android:id="@+id/device_name"
 			android:layout_marginTop="7dp"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_toLeftOf="@+id/btn_pair"
 			android:layout_alignTop="@+id/btn_pair"
 			android:textSize="15dp"
 			android:textColor="#000000"
-			android:text="Galaxy Nexus" android:layout_toEndOf="@+id/imageView"/>
+			android:text="Galaxy Nexus"
+			android:layout_toStartOf="@+id/btn_pair"
+			android:layout_toEndOf="@+id/imageView"/>
 
 	<TextView
 			android:id="@+id/device_address"
@@ -37,6 +38,7 @@
 			android:layout_height="wrap_content"
 			android:paddingTop="3dp"
 			android:text="00:00:00:00:00:00"
+			android:layout_toStartOf="@+id/btn_pair"
 			android:layout_below="@+id/device_name" android:layout_toEndOf="@+id/imageView"/>
 	<ImageView
 			android:layout_width="70dp"

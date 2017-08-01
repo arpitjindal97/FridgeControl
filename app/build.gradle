@@ -38,6 +38,7 @@ ext {
     firebase_client='2.5.2'
     circleimageview='2.1.0'
     avatarview='0.0.2'
+    radiogroupplus='v1.0.1'
 }
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

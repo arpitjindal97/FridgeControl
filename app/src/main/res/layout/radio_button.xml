@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+			  android:id="@+id/radioButtonLayout"
+			  android:layout_width="match_parent"
+			  android:layout_height="wrap_content"
+			  android:orientation="horizontal"
+			  android:descendantFocusability="blocksDescendants"
+			  android:layout_margin="2dp">
+
+	<RadioButton
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/radioButton"
+			android:text=""
+			android:layout_alignParentTop="true"
+			android:layout_alignParentStart="true"/>
+
+	<TextView
+			android:id="@+id/textCode"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Code XYZ"
+			android:textSize="19dp"
+			android:layout_marginTop="2dp"
+			android:layout_marginStart="22dp"/>
+</LinearLayout>
